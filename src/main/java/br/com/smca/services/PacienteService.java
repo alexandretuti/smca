@@ -1,7 +1,9 @@
 package br.com.smca.services;
 
+import br.com.smca.dto.LocalidadeDTO;
 import br.com.smca.dto.PacienteDTO;
 import br.com.smca.models.Paciente;
+import br.com.smca.repositories.LocalidadeDAO;
 import br.com.smca.repositories.PacienteRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,9 @@ public class PacienteService {
 
     @Autowired
     private PacienteRepository pacienteRepository;
+
+    @Autowired
+    private LocalidadeDAO localidadeDAO;
 
     public Paciente save(PacienteDTO pacienteDTO) {
         ModelMapper mapper = new ModelMapper();
@@ -32,7 +37,6 @@ public class PacienteService {
 
     public List<PacienteDTO> findAll() {
 
-
         List<Paciente> PacientesLst = pacienteRepository.findAll();
         List<PacienteDTO> pacienteDTO = new ArrayList<PacienteDTO>();
         ModelMapper mapper = new ModelMapper();
@@ -40,6 +44,14 @@ public class PacienteService {
             pacienteDTO.add(mapper.map(paciente, PacienteDTO.class));
         }
         return pacienteDTO;
+    }
+
+
+    public List<LocalidadeDTO> getAllLocalidades() {
+
+        List<LocalidadeDTO> localidadeDTOList = localidadeDAO.listarLocalidades();
+        return localidadeDTOList;
+
     }
 
     public PacienteDTO findById(Long id) {

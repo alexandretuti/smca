@@ -1,5 +1,6 @@
 package br.com.smca.controllers;
 
+import br.com.smca.dto.LocalidadeDTO;
 import br.com.smca.dto.PacienteDTO;
 import br.com.smca.models.Paciente;
 import br.com.smca.services.PacienteService;
@@ -8,8 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -52,6 +56,20 @@ public class SmcaController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/pacientes/localidade")
+    public ResponseEntity<Map<String,Long>> getAllLocalidades() {
+
+        List<PacienteDTO> pacientesLst = pacienteService.findAll();
+        if(pacientesLst.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            Map<String,Long> mapa = pacientesLst.stream()
+                    .collect(Collectors.groupingBy(PacienteDTO::getBairro, Collectors.counting()));
+            return new ResponseEntity<>(mapa, HttpStatus.OK);
+        }
+
     }
 
 }

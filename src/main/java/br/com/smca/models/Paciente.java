@@ -5,7 +5,6 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.UUID;
 
 @Entity
 @Data
@@ -30,6 +29,5 @@ public class Paciente implements Serializable {
 
     @Column()
     private Timestamp dataCadastro;
-
 
 }

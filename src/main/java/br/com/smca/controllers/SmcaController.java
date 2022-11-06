@@ -6,6 +6,7 @@ import br.com.smca.services.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,11 +22,13 @@ public class SmcaController {
     @Autowired
     private PacienteService pacienteService;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/hello")
     public String helloWorld(){
         return "hello World!";
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping("/pacientes")
     public ResponseEntity<PacienteDTO> salvarPaciente(@Valid @RequestBody PacienteDTO pacienteDTO){
         Paciente retModel = pacienteService.save(pacienteDTO);
@@ -34,6 +37,7 @@ public class SmcaController {
         return new ResponseEntity<PacienteDTO>(pacienteDTO, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("/pacientes")
     public ResponseEntity<List<PacienteDTO>> getAllPacientes() {
 
@@ -46,6 +50,7 @@ public class SmcaController {
 
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("/pacientes/{id}")
     public ResponseEntity<PacienteDTO> getPacienteEspecifico(@PathVariable(value = "id") Long id) {
         PacienteDTO pacienteDTO = pacienteService.findById(id);
@@ -56,6 +61,7 @@ public class SmcaController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("/pacientes/localidade")
     public ResponseEntity<Map<String,Long>> getAllLocalidades() {
 

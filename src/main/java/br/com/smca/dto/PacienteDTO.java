@@ -13,4 +13,6 @@ public class PacienteDTO {
     private String dataNascimento;
     private String bairro;
     private Timestamp dataCadastro;
+    private String telefone;
+    private String email;
 }

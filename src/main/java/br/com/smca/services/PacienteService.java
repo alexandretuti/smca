@@ -28,7 +28,7 @@ public class PacienteService {
             paciente.setDataCadastro(ts);
             return pacienteRepository.save(paciente);
         }catch (Exception e){
-            throw new RuntimeException("Ocorreu um erro ao cadastrar paciente");
+            throw new RuntimeException("Ocorreu um erro ao cadastrar paciente" + e.getMessage());
         }
     }
 

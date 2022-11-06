@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -22,11 +23,11 @@ public class SmcaController {
 
     @GetMapping("/hello")
     public String helloWorld(){
-        return "helloWorld!";
+        return "hello World!";
     }
 
     @PostMapping("/pacientes")
-    public ResponseEntity<PacienteDTO> salvarPaciente(@RequestBody PacienteDTO pacienteDTO){
+    public ResponseEntity<PacienteDTO> salvarPaciente(@Valid @RequestBody PacienteDTO pacienteDTO){
         Paciente retModel = pacienteService.save(pacienteDTO);
         pacienteDTO.setPacienteId(retModel.getPacienteId());
         pacienteDTO.setDataCadastro(retModel.getDataCadastro());

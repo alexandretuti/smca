@@ -22,19 +22,22 @@ public class SmcaController {
     @Autowired
     private PacienteService pacienteService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/hello")
     public String helloWorld(){
-        return "hello World!";
+        return "hello World from SMCA!";
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping("/pacientes")
-    public ResponseEntity<PacienteDTO> salvarPaciente(@Valid @RequestBody PacienteDTO pacienteDTO){
+    public ResponseEntity<PacienteDTO> salvarPaciente(@Valid @RequestBody PacienteDTO pacienteDTO) throws Exception {
         Paciente retModel = pacienteService.save(pacienteDTO);
         pacienteDTO.setPacienteId(retModel.getPacienteId());
         pacienteDTO.setDataCadastro(retModel.getDataCadastro());
-        return new ResponseEntity<PacienteDTO>(pacienteDTO, HttpStatus.CREATED);
+        try {
+            return new ResponseEntity<PacienteDTO>(pacienteDTO, HttpStatus.CREATED);
+        }catch (RuntimeException e){
+            throw new Exception("Cliente já cadastrado!");
+        }
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
@@ -63,7 +66,7 @@ public class SmcaController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("/pacientes/localidade")
-    public ResponseEntity<Map<String,Long>> getAllLocalidades() {
+    public ResponseEntity<Map<String,Long>> getCasesByLocalidades() {
 
         List<PacienteDTO> pacientesLst = pacienteService.findAll();
         if(pacientesLst.isEmpty()) {

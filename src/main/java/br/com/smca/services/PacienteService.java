@@ -27,8 +27,8 @@ public class PacienteService {
             Timestamp ts = new Timestamp(date.getTime());
             paciente.setDataCadastro(ts);
             return pacienteRepository.save(paciente);
-        }catch (Exception e){
-            throw new RuntimeException("Ocorreu um erro ao cadastrar paciente" + e.getMessage());
+        }catch (RuntimeException e){
+            throw new RuntimeException("***Ocorreu um erro ao tentar cadastrar o paciente. Motivo: Paciente já cadastrado.***\n");
         }
     }
 

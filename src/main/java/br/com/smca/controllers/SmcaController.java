@@ -24,7 +24,7 @@ public class SmcaController {
 
     @GetMapping("/hello")
     public String helloWorld(){
-        return "hello World from SMCA!";
+        return "Hello World from SMCA!";
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
